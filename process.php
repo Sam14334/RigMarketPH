@@ -51,9 +51,7 @@ function render_result_card(string $heading, string $type, string $message, stri
     echo "<a href='" . htmlspecialchars($buttonUrl) . "' class='inline-block bg-brand hover:bg-brandDark text-white font-semibold px-6 py-2.5 rounded transition shadow-md'>" . htmlspecialchars($buttonText) . "</a>";
 }
 
-// ---------------------------------------------------------------------------
-// 1. LOGOUT ACTION
-// ---------------------------------------------------------------------------
+// 1. Logout Action
 if ($action === 'logout') {
     $_SESSION = [];
     if (ini_get("session.use_cookies")) {
@@ -77,9 +75,7 @@ if ($action === 'logout') {
     exit;
 }
 
-// ---------------------------------------------------------------------------
-// 2. CONTACT SUPPORT FORM SUBMISSION (FALLBACK)
-// ---------------------------------------------------------------------------
+// 2. Contact Support Form Submission (Fallback)
 if ($action === 'contact') {
     $name     = trim((string)($_POST['name'] ?? ''));
     $email    = trim((string)($_POST['email'] ?? ''));
@@ -113,9 +109,7 @@ if ($action === 'contact') {
     exit;
 }
 
-// ---------------------------------------------------------------------------
-// 3. REGISTRATION ACTION
-// ---------------------------------------------------------------------------
+// 3. Registration Action
 if ($action === 'register') {
     $name     = trim((string)($_POST['name'] ?? ''));
     $email    = trim((string)($_POST['email'] ?? ''));
@@ -163,9 +157,7 @@ if ($action === 'register') {
     exit;
 }
 
-// ---------------------------------------------------------------------------
-// 4. LOGIN ACTION
-// ---------------------------------------------------------------------------
+// 4. Login Action
 if ($action === 'login') {
     $email    = trim((string)($_POST['email'] ?? ''));
     $password = (string)($_POST['password'] ?? '');
