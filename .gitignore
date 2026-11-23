@@ -1,0 +1,26 @@
+# Environment & Configuration
+.env
+config.local.php
+
+# IDE & Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# AI Agent & Assistant Files
+.agents/
+.gemini/
+
+# Operating System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs & Temporary Files
+*.log
+error_log
+*.tmp
+*.bak
+*.swp
