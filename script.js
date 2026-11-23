@@ -21,55 +21,44 @@ $(document).ready(async function() {
         $('#tab-register').removeClass('text-brand border-b-2 border-brand bg-slate-800').addClass('text-slate-400 hover:text-brand'); 
     });
 
-    // default seed data
-    const initialUsers = [
-        {
-            "email": "test@example.com",
-            "password": "password123",
-            "name": "Test User"
-        },
-        {
-            "email": "admin@rigmarket.ph",
-            "password": "admin",
-            "name": "Admin"
-        }
-    ];
-const initialProducts = [        { "id": 1, "title": "1TB NVMe M.2 SSD", "price": 3500, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Metro Manila", "image": "images/1tb ssd m.2.jpg", "specs": "1TB Capacity, PCIe Gen 3.0 x4, up to 3500 MB/s read, M.2 2280 Form Factor", "description": "Fast and reliable 1TB M.2 SSD for gaming or productivity. Perfect for an OS drive.", "status": "Available", "sellerName": "Tech store PH", "datePosted": "Oct 23, 2024" },        { "id": 2, "title": "Acer Nitro V 16", "price": 45000, "category": "Laptops", "condition": "Brand New", "brand": "Acer", "location": "Quezon City", "image": "images/Acer-nitro-v-16-3.jpg", "specs": "AMD Ryzen 7 7840HS, NVIDIA RTX 4050, 16GB DDR5, 512GB SSD, 16-inch 165Hz", "description": "Latest Acer Nitro V 16. Powerful processor and GPU combo for AAA gaming.", "status": "Available", "sellerName": "PC Hub Reseller", "datePosted": "Oct 23, 2024" },        { "id": 3, "title": "Gigabyte Gaming A16 Laptop", "price": 52000, "category": "Laptops", "condition": "Like New", "brand": "Gigabyte", "location": "Makati City", "image": "images/GIGABYTE GAMING A16.jpg", "specs": "AMD Ryzen 7 7735HS, Radeon RX 7600S, 16GB RAM, 1TB SSD, 16\" 165Hz Display", "description": "All AMD advantage gaming laptop. Excellent thermals and performance.", "status": "Available", "sellerName": "Alex T.", "datePosted": "Oct 22, 2024" },        { "id": 4, "title": "Acer Nitro V 15", "price": 41000, "category": "Laptops", "condition": "Slightly Used", "brand": "Acer", "location": "Pasig City", "image": "images/acer nitro v15.jpg", "specs": "Intel Core i5-13420H, RTX 4050 6GB, 8GB DDR5, 512GB Gen4 SSD, 144Hz 15.6\"", "description": "Lightly used for office work and light gaming. Upgrading to a desktop soon.", "status": "Available", "sellerName": "Mark S.", "datePosted": "Oct 21, 2024" },        { "id": 5, "title": "AORUS FO32U2P OLED Gaming Monitor", "price": 65000, "category": "Monitors", "condition": "Brand New", "brand": "Gigabyte", "location": "Taguig", "image": "images/aorus fo32u2p gaming monitor.jpg", "specs": "32-inch 4K UHD (3840x2160), QD-OLED, 240Hz, 0.03ms, DisplayPort 2.1", "description": "The ultimate 4K OLED gaming experience. Brand new sealed with full warranty.", "status": "Available", "sellerName": "Gamer123", "datePosted": "Oct 20, 2024" },        { "id": 6, "title": "ASUS Prime B450M-K II Motherboard", "price": 2500, "category": "Processors", "condition": "Slightly Used", "brand": "Asus", "location": "Bi\u00f1an, Laguna", "image": "images/asus_prime_b450m-k_ii_csm_motherboard.jpg", "specs": "AMD AM4 Socket, Micro-ATX, PCIe 3.0, M.2 slot, DDR4 support", "description": "Budget motherboard. Fully working, just replaced with a B550.", "status": "Available", "sellerName": "John Doe", "datePosted": "Oct 19, 2024" },        { "id": 7, "title": "Attack Shark R2 Mouse", "price": 1800, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Manila", "image": "images/attack shark r2 mouse.jpg", "specs": "Magnesium Alloy, Lightweight 40g, PAW3395 Sensor, 4K/8K Hz Polling Rate", "description": "Premium ultra-lightweight gaming mouse. Opened only for testing.", "status": "Available", "sellerName": "Jane Smith", "datePosted": "Oct 18, 2024" },        { "id": 8, "title": "Attack Shark R5 Mouse", "price": 1500, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Cavite", "image": "images/attack shark r5 mouse.jpg", "specs": "Ultra-lightweight wireless, PAW3395 sensor, ergonomic shape", "description": "Great budget wireless mouse. Sealed box.", "status": "Sold", "sellerName": "Admin User", "datePosted": "Oct 17, 2024" },        { "id": 9, "title": "Crucial DDR5 Pro RAM 32GB (2x16GB)", "price": 6000, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Muntinlupa", "image": "images/crucial ddr5 pro ram.jpg", "specs": "32GB (2x16GB) DDR5-5600, Low Profile Heatsink, Intel XMP 3.0 & AMD EXPO", "description": "Fast and reliable DDR5 memory kit. Unused.", "status": "Available", "sellerName": "Dave M.", "datePosted": "Oct 16, 2024" },        { "id": 10, "title": "Kingston 8GB DDR4 RAM", "price": 800, "category": "Peripherals", "condition": "Slightly Used", "brand": "Other", "location": "Metro Manila", "image": "images/ddr4 ram.jpg", "specs": "8GB DDR4 2666MHz, CL19, Non-ECC Unbuffered", "description": "Basic DDR4 stick. Good for office PCs or budget builds.", "status": "Available", "sellerName": "Kael", "datePosted": "Oct 15, 2024" },        { "id": 11, "title": "Nvidia GTX 1050 Ti 4GB", "price": 3500, "category": "Graphics Cards (GPU)", "condition": "Slightly Used", "brand": "NVIDIA", "location": "Quezon City", "image": "images/gtx 1050ti.jpg", "specs": "4GB GDDR5, 128-bit, PCIe 3.0, No external power needed", "description": "Classic budget GPU. Still runs eSports titles smoothly.", "status": "Available", "sellerName": "Nina", "datePosted": "Oct 14, 2024" },        { "id": 12, "title": "Koorui 34E6UC Ultrawide Monitor", "price": 12000, "category": "Monitors", "condition": "Like New", "brand": "Other", "location": "Makati City", "image": "images/koorui-34e6uc-gaming-monitor-review-ultrawide-at-180hz-on-budget_full.jpg", "specs": "34-inch VA Panel, 3440x1440p (WQHD), 165Hz (180Hz OC), 1500R Curved", "description": "Budget ultrawide king. No dead pixels.", "status": "Available", "sellerName": "PC Hub Reseller", "datePosted": "Oct 13, 2024" },        { "id": 13, "title": "Lenovo Legion 5 15\"", "price": 55000, "category": "Laptops", "condition": "Slightly Used", "brand": "Lenovo", "location": "Bi\u00f1an, Laguna", "image": "images/lenovo_legion_5_15_.jpg", "specs": "Ryzen 7 5800H, RTX 3060 130W, 16GB RAM, 1TB SSD, 165Hz FHD IPS", "description": "Legendary Legion 5. Thermals are fantastic. Minor scratches on chassis.", "status": "Pending", "sellerName": "Admin User", "datePosted": "Oct 12, 2024" },        { "id": 14, "title": "256GB M.2 SATA SSD", "price": 800, "category": "Peripherals", "condition": "Slightly Used", "brand": "Other", "location": "Manila", "image": "images/m.2ssd.jpg", "specs": "256GB Capacity, SATA III 6Gb/s, M.2 2280", "description": "Spare drive. Healthy condition in CrystalDiskInfo.", "status": "Available", "sellerName": "John Doe", "datePosted": "Oct 11, 2024" },        { "id": 15, "title": "Nvidia RTX 2060 6GB", "price": 7500, "category": "Graphics Cards (GPU)", "condition": "Slightly Used", "brand": "NVIDIA", "location": "Cavite", "image": "images/nvidia-rtx-2060.jpg", "specs": "6GB GDDR6, Ray Tracing, DLSS, 192-bit", "description": "Upgraded to 40-series. This card still holds up well at 1080p.", "status": "Available", "sellerName": "Jane Smith", "datePosted": "Oct 10, 2024" },        { "id": 16, "title": "Patriot Viper Steel 8GB DDR4", "price": 1000, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "San Pedro", "image": "images/patriot viper steel ram 8gb.jpg", "specs": "8GB DDR4 3200MHz CL16, Aluminum Heatshield", "description": "Brand new unopened RAM module.", "status": "Available", "sellerName": "Alex T.", "datePosted": "Oct 09, 2024" },        { "id": 17, "title": "AMD Ryzen 3 3200G APU", "price": 2800, "category": "Processors", "condition": "Slightly Used", "brand": "AMD", "location": "Pasig City", "image": "images/r3 3200g.jpg", "specs": "4 Cores, 4 Threads, 3.6 GHz Base Clock, Vega 8 Graphics", "description": "Perfect for a budget office PC or light gaming without a GPU.", "status": "Available", "sellerName": "Gamer123", "datePosted": "Oct 08, 2024" },        { "id": 18, "title": "AMD Ryzen 5 5600G APU", "price": 6000, "category": "Processors", "condition": "Like New", "brand": "AMD", "location": "Quezon City", "image": "images/r5 5600g.jpg", "specs": "6 Cores, 12 Threads, up to 4.4 GHz, Radeon Graphics", "description": "Used for a month before buying a dedicated GPU. Comes with stock cooler.", "status": "Available", "sellerName": "Mark S.", "datePosted": "Oct 07, 2024" },        { "id": 19, "title": "RAKK Mag-an Wireless Mouse", "price": 900, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Taguig", "image": "images/rakk mag-an wireless mouse.jpg", "specs": "Pixart 3325 Sensor, 2.4GHz Wireless, RGB, Ergonomic", "description": "Local brand budget wireless mouse. Surprising quality.", "status": "Available", "sellerName": "Tech store PH", "datePosted": "Oct 06, 2024" },        { "id": 20, "title": "Royal Kludge RK L75", "price": 2200, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Makati City", "image": "images/royal kludge l75 mechanical keyboard.jpg", "specs": "75% Layout, Low Profile Mechanical Switches, RGB, Hot-swappable", "description": "Sleek low profile keyboard for productivity and gaming.", "status": "Available", "sellerName": "Dave M.", "datePosted": "Oct 05, 2024" },        { "id": 21, "title": "Royal Kludge RK N80", "price": 2500, "category": "Peripherals", "condition": "Like New", "brand": "Other", "location": "Metro Manila", "image": "images/royal kludge n80 wireless mechanical keyboard.jpg", "specs": "75% Layout (80 keys), Rotary Knob, Tri-mode Wireless, Hot-swappable", "description": "Barely used. Replaced keycaps once, comes with original ones.", "status": "Available", "sellerName": "Nina", "datePosted": "Oct 04, 2024" },        { "id": 22, "title": "Royal Kludge S98", "price": 3200, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Muntinlupa", "image": "images/royal kludge s98 wirelss mechanical keyboard.jpg", "specs": "96% Layout, Smart Display Screen, Tri-mode Wireless, Gasket Mount", "description": "Premium RK keyboard with a customizable smart screen.", "status": "Available", "sellerName": "Kael", "datePosted": "Oct 03, 2024" },        { "id": 23, "title": "Nvidia RTX 2060 Super 8GB", "price": 9500, "category": "Graphics Cards (GPU)", "condition": "Slightly Used", "brand": "NVIDIA", "location": "Bi\u00f1an, Laguna", "image": "images/rtx 2060 super.jpg", "specs": "8GB GDDR6, 256-bit, CUDA Cores: 2176, Boost Clock: 1650 MHz", "description": "Very capable 1080p and entry 1440p card. Repasted a month ago.", "status": "Sold", "sellerName": "Admin User", "datePosted": "Oct 02, 2024" },        { "id": 24, "title": "Nvidia RTX 4050 6GB (Desktop)", "price": 12000, "category": "Graphics Cards (GPU)", "condition": "Brand New", "brand": "NVIDIA", "location": "Manila", "image": "images/rtx 4050.jpg", "specs": "6GB GDDR6, DLSS 3, Frame Generation, Low Power Draw", "description": "Great for small form factor builds. DLSS 3 is amazing.", "status": "Available", "sellerName": "PC Hub Reseller", "datePosted": "Oct 01, 2024" },        { "id": 25, "title": "AMD Radeon RX 580 8GB 2048SP", "price": 3000, "category": "Graphics Cards (GPU)", "condition": "Slightly Used", "brand": "AMD", "location": "Cavite", "image": "images/rx-580-8gb-2048sp.jpg", "specs": "8GB GDDR5, 2048 Stream Processors, 256-bit", "description": "Budget king from a few years ago. Still runs eSports games perfectly.", "status": "Available", "sellerName": "John Doe", "datePosted": "Sep 30, 2024" },        { "id": 26, "title": "SATA & M.2 SSD Bundle", "price": 2000, "category": "Peripherals", "condition": "Slightly Used", "brand": "Other", "location": "San Pedro", "image": "images/sata & m.2 ssd bundle.jpg", "specs": "500GB SATA SSD + 256GB M.2 SATA SSD", "description": "Selling as bundle. Both are 100% healthy.", "status": "Available", "sellerName": "Jane Smith", "datePosted": "Sep 29, 2024" },        { "id": 27, "title": "VXE R1 Pro Wireless Mouse", "price": 2100, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Pasig City", "image": "images/vxe_r1pro mouse.jpg", "specs": "PAW3395 Sensor, 48g Ultra-lightweight, Nordic MCU, 4K Compatible", "description": "One of the best budget mice of the year. Sealed box.", "status": "Available", "sellerName": "Gamer123", "datePosted": "Sep 28, 2024" },        { "id": 28, "title": "Wooting 60HE Keyboard", "price": 10500, "category": "Peripherals", "condition": "Like New", "brand": "Other", "location": "Quezon City", "image": "images/wooting 60he mechanical keyboard.jpg", "specs": "60% Layout, Lekker Linear Switches (Analog/Hall Effect), Rapid Trigger", "description": "The ultimate gaming keyboard. Only selling because I need a TKL.", "status": "Available", "sellerName": "Alex T.", "datePosted": "Sep 27, 2024" },        { "id": 29, "title": "XPG Lancer Blade RGB 32GB DDR5", "price": 6800, "category": "Peripherals", "condition": "Brand New", "brand": "Other", "location": "Makati City", "image": "images/xpg lancer blade rgb ddr5 6000 32 gp ram.jpg", "specs": "32GB (2x16GB) DDR5-6000MHz, CL30, Low Profile RGB, AMD EXPO", "description": "Sweet spot speed and latency for Ryzen 7000 series.", "status": "Available", "sellerName": "Mark S.", "datePosted": "Sep 26, 2024" }    ];
+    // state
+    let products = [];
+    let currentUser = null;
 
-    // initialize local storage data
     async function initializeData() {
-        let storedUsers = JSON.parse(localStorage.getItem('users'));
-        let storedProducts = JSON.parse(localStorage.getItem('products'));
-        let isSeeded = localStorage.getItem('seeded_v10');
-
-        if (!isSeeded) {
-            localStorage.setItem('users', JSON.stringify(initialUsers));
-            localStorage.setItem('products', JSON.stringify(initialProducts));
-            localStorage.setItem('seeded_v10', 'true');
-        } else {
-            if (!storedUsers || storedUsers.length === 0) localStorage.setItem('users', JSON.stringify(initialUsers));
-            if (!storedProducts || storedProducts.length === 0) localStorage.setItem('products', JSON.stringify(initialProducts));
+        // 1. Fetch authenticated session from PHP backend
+        try {
+            const sessionRes = await fetch('api.php?action=session');
+            if (sessionRes.ok) {
+                const sessionData = await sessionRes.json();
+                currentUser = sessionData.user || null;
+            }
+        } catch (e) {
+            console.warn('Session check failed:', e);
         }
 
-        // hotfix: update image paths in localStorage without wiping data
-        if (!localStorage.getItem('hotfix_images_path')) {
-            let currentProducts = JSON.parse(localStorage.getItem('products'));
-            if (currentProducts) {
-                currentProducts.forEach(p => {
-                    if (p.image && p.image.startsWith('../images/')) {
-                        p.image = p.image.replace('../images/', 'images/');
-                    }
-                });
-                localStorage.setItem('products', JSON.stringify(currentProducts));
+        // Fallback: check localStorage for cached user
+        if (!currentUser) {
+            try {
+                currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+            } catch (e) {
+                currentUser = null;
             }
-            localStorage.setItem('hotfix_images_path', 'true');
+        }
+
+        // 2. Fetch live products from Supabase via api.php
+        try {
+            const productsRes = await fetch('api.php?action=products');
+            if (productsRes.ok) {
+                const productsData = await productsRes.json();
+                products = productsData.data || [];
+            }
+        } catch (e) {
+            console.error('Failed to load products from API:', e);
         }
     }
 
     await initializeData();
-    let products = JSON.parse(localStorage.getItem('products')) || initialProducts;
-    let users = JSON.parse(localStorage.getItem('users')) || initialUsers;
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     // update navbar if logged in
     if (currentUser) {
@@ -84,7 +73,9 @@ const initialProducts = [        { "id": 1, "title": "1TB NVMe M.2 SSD", "price"
 
     $(document).on('click', '#logout-btn, #mobile-logout-btn', function() {
         localStorage.removeItem('currentUser');
-        window.location.reload();
+        const form = $('<form method="post" action="process.php" style="display:none"><input type="hidden" name="action" value="logout"></form>');
+        $('body').append(form);
+        form.submit();
     });
 
 
@@ -333,7 +324,20 @@ const initialProducts = [        { "id": 1, "title": "1TB NVMe M.2 SSD", "price"
     if ($('#details-container').length) {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = parseInt(urlParams.get('id'));
-        const product = products.find(p => p.id === productId);
+        let product = products.find(p => p.id === productId);
+
+        // if not found in loaded array, fetch directly from api.php
+        if (!product && productId) {
+            try {
+                const res = await fetch(`api.php?action=product&id=${productId}`);
+                if (res.ok) {
+                    const json = await res.json();
+                    product = json.data;
+                }
+            } catch (e) {
+                console.error('Error fetching product details:', e);
+            }
+        }
 
         if (product) {
             $('#details-container').removeClass('hidden');
@@ -343,11 +347,26 @@ const initialProducts = [        { "id": 1, "title": "1TB NVMe M.2 SSD", "price"
             $('#detail-category').text(product.category);
             $('#detail-specs').text(product.specs);
             $('#detail-description').text(product.description || "No additional details provided.");
-            $('#detail-date').text("Posted on: " + (product.datePosted || "Unknown date"));
+            $('#detail-date').text("Posted on: " + (product.date_posted || product.datePosted || "Unknown date"));
             $('#detail-condition').text(product.condition);
-            $('#detail-brand').text(product.brand);
-            $('#detail-seller').text(product.sellerName || "Anonymous User");
+            $('#detail-brand').text(product.brand || "Other");
+            $('#detail-seller').text(product.seller_name || product.sellerName || "Anonymous User");
             $('#detail-location span').text(product.location);
+
+            // Thumbnail gallery support if multiple images exist
+            if (product.listing_images && product.listing_images.length > 1) {
+                let thumbsHtml = product.listing_images.map(img => `
+                    <img src="${img.image_url}" class="w-14 h-14 object-cover rounded cursor-pointer border-2 border-slate-700 hover:border-brand transition gallery-thumb" alt="${product.title}">
+                `).join('');
+                if ($('#detail-gallery-strip').length === 0) {
+                    $('#detail-image').after(`<div id="detail-gallery-strip" class="flex flex-wrap gap-2 p-3 w-full bg-slate-950/70 justify-center border-t border-slate-700">${thumbsHtml}</div>`);
+                }
+                $(document).on('click', '.gallery-thumb', function() {
+                    $('.gallery-thumb').removeClass('border-brand').addClass('border-slate-700');
+                    $(this).removeClass('border-slate-700').addClass('border-brand');
+                    $('#detail-image').attr('src', $(this).attr('src'));
+                });
+            }
 
             let statusEl = $('#detail-status');
             statusEl.text(product.status || "Available");
@@ -427,35 +446,47 @@ const initialProducts = [        { "id": 1, "title": "1TB NVMe M.2 SSD", "price"
     //     window.location.href = "index.php?login=success";
     // });
 
-    $('#listing-form').submit(function(e) {
+    $('#listing-form').submit(async function(e) {
         e.preventDefault();
         if (!currentUser) {
             alert("You must be logged in to post a listing!");
             window.location.href = "login.php";
             return;
         }
+
+        const submitBtn = $(this).find('button[type="submit"]');
+        submitBtn.prop('disabled', true).text('Posting Listing...');
+
         let customImg = $('#post-image').val().trim();
-        let newProduct = {
-            id: products.length + 1,
+        let payload = {
             title: $('#post-title').val().trim(),
             price: parseInt($('#post-price').val()),
             category: $('#post-category').val(),
             condition: $('#post-condition').val(),
             location: $('#post-location').val().trim(),
             specs: $('#post-specs').val().trim(),
-            description: "No additional description provided.",
-            brand: "Other", 
-            image: customImg || "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=400&h=300",
-            status: "Available",
-            sellerName: currentUser.name,
-            datePosted: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            image: customImg
         };
-        products.push(newProduct);
-        localStorage.setItem('products', JSON.stringify(products));
-        
-        alert("Listing successfully posted!");
-        $(this)[0].reset();
-        window.location.href = "products.php";
+
+        try {
+            const res = await fetch('api.php?action=create_listing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+
+            if (result.ok) {
+                alert("Listing successfully posted!");
+                window.location.href = "products.php";
+            } else {
+                alert(result.message || "Failed to post listing. Please try again.");
+                submitBtn.prop('disabled', false).text('Post Listing');
+            }
+        } catch (err) {
+            alert("An error occurred while posting your listing. Please try again.");
+            submitBtn.prop('disabled', false).text('Post Listing');
+        }
     });
 
     // $('#contact-form').submit(function(e) {
