@@ -75,6 +75,16 @@ function supabase_request(string $endpoint, string $method = 'GET', ?array $data
 }
 
 /**
+ * Convenience wrapper for a Supabase REST POST insert.
+ * Returns the inserted row array or null on failure.
+ */
+function supabase_insert(string $table, array $data): ?array
+{
+    $result = supabase_request($table, 'POST', $data);
+    return is_array($result) ? ($result[0] ?? null) : null;
+}
+
+/**
  * Get direct PostgreSQL PDO connection (requires DB password).
  */
 function get_pdo_connection(): PDO
