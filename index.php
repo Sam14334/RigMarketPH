@@ -17,6 +17,23 @@
             }
         }
     </script>
+    <style>
+        /* Custom scrollbar for dropdown menu */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #D2232A;
+        }
+    </style>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans">
     <!-- navbar -->
@@ -52,8 +69,8 @@
     </nav>
 
     <!-- hero section -->
-    <header class="relative bg-slate-900 text-white py-24 px-4 overflow-hidden">
-        <div class="absolute inset-0 z-0">
+    <header class="relative bg-slate-900 text-white py-24 px-4 z-30">
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <img src="images/GIGABYTE GAMING A16.jpg" alt="PC Gaming Setup" class="w-full h-full object-cover opacity-30">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
         </div>
@@ -62,19 +79,93 @@
             <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 drop-shadow-md">Find & Sell PC Parts Locally</h1>
             <p class="text-lg md:text-xl text-gray-300 mb-10 drop-shadow">The trusted P2P classifieds for the Philippine PC building and gaming community.</p>
             
-            <form id="search-form" class="flex flex-col md:flex-row bg-slate-800/90 backdrop-blur-md rounded-lg overflow-hidden shadow-2xl p-1 border border-slate-700">
+            <form id="search-form" class="flex flex-col md:flex-row bg-slate-800/90 backdrop-blur-md rounded-lg shadow-2xl p-1 border border-slate-700 relative z-30">
                 <div class="flex-grow flex items-center px-4 py-3 md:border-r border-slate-700">
                     <i class="fas fa-search text-gray-400 mr-3"></i>
                     <input id="home-search-input" type="text" placeholder="Search for RTX 3060, Keyboards..." class="w-full focus:outline-none bg-transparent text-white placeholder-gray-400">
                 </div>
-                <div class="flex-grow flex items-center px-4 py-3 md:border-r border-slate-700 mt-2 md:mt-0">
-                    <i class="fas fa-map-marker-alt text-brand mr-3"></i>
-                    <select id="home-location-select" class="w-full focus:outline-none bg-transparent text-white cursor-pointer appearance-none">
-                        <option value="" class="bg-slate-800">All Locations</option>
-                        <option value="binan" class="bg-slate-800">Bi&ntilde;an, Laguna</option>
-                        <option value="manila" class="bg-slate-800">Metro Manila</option>
-                        <option value="cavite" class="bg-slate-800">Cavite</option>
+                <div class="relative flex-grow flex items-center px-4 py-3 md:border-r border-slate-700 mt-2 md:mt-0" id="custom-location-wrapper">
+                    <!-- Hidden native select for full backward compatibility with search and filter logic -->
+                    <select id="home-location-select" class="hidden">
+                        <option value="" selected>All Locations</option>
+                        <option value="metro manila">Metro Manila</option>
+                        <option value="quezon city">Quezon City</option>
+                        <option value="makati">Makati City</option>
+                        <option value="pasig">Pasig City</option>
+                        <option value="taguig">Taguig</option>
+                        <option value="manila">Manila</option>
+                        <option value="binan">Bi&ntilde;an, Laguna</option>
+                        <option value="cavite">Cavite</option>
+                        <option value="muntinlupa">Muntinlupa</option>
+                        <option value="san pedro">San Pedro</option>
+                        <option value="cebu">Cebu</option>
+                        <option value="davao">Davao</option>
                     </select>
+
+                    <!-- Custom Dropdown Button -->
+                    <button type="button" id="custom-location-btn" class="w-full flex items-center justify-between text-left focus:outline-none bg-transparent text-white cursor-pointer select-none group">
+                        <span class="flex items-center truncate">
+                            <i class="fas fa-map-marker-alt text-brand mr-3 transition-transform duration-200 group-hover:scale-110"></i>
+                            <span id="custom-location-selected-text" class="text-white truncate">All Locations</span>
+                        </span>
+                        <i id="custom-location-arrow" class="fas fa-chevron-down text-xs text-slate-400 ml-2 transition-transform duration-300 ease-in-out"></i>
+                    </button>
+
+                    <!-- Animated Dropdown Menu (max-height set for 4 items, then smoothly scrollable) -->
+                    <div id="custom-location-menu" class="custom-scrollbar absolute left-0 right-0 top-full mt-2 bg-slate-800/98 backdrop-blur-md border border-slate-700 rounded-lg shadow-2xl py-1.5 z-50 transition-all duration-200 ease-out origin-top opacity-0 invisible -translate-y-2 pointer-events-none max-h-[172px] overflow-y-auto" style="scrollbar-width: thin; scrollbar-color: #475569 #1e293b;">
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-white hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors font-medium bg-slate-700/50" data-value="" data-text="All Locations">
+                            <span>All Locations</span>
+                            <i class="fas fa-check text-xs text-brand check-icon"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="metro manila" data-text="Metro Manila">
+                            <span>Metro Manila</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="quezon city" data-text="Quezon City">
+                            <span>Quezon City</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="makati" data-text="Makati City">
+                            <span>Makati City</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="pasig" data-text="Pasig City">
+                            <span>Pasig City</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="taguig" data-text="Taguig">
+                            <span>Taguig</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="manila" data-text="Manila">
+                            <span>Manila</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="binan" data-text="Bi&ntilde;an, Laguna">
+                            <span>Bi&ntilde;an, Laguna</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="cavite" data-text="Cavite">
+                            <span>Cavite</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="muntinlupa" data-text="Muntinlupa">
+                            <span>Muntinlupa</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="san pedro" data-text="San Pedro">
+                            <span>San Pedro</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="cebu" data-text="Cebu">
+                            <span>Cebu</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                        <div class="custom-location-option px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700/80 hover:text-brand cursor-pointer flex items-center justify-between transition-colors" data-value="davao" data-text="Davao">
+                            <span>Davao</span>
+                            <i class="fas fa-check text-xs text-brand check-icon hidden"></i>
+                        </div>
+                    </div>
                 </div>
                 <button type="submit" class="bg-brand hover:bg-brandDark text-white font-bold py-3 px-8 mt-2 md:mt-0 rounded-md transition w-full md:w-auto shadow-lg">
                     Search
@@ -84,7 +175,7 @@
     </header>
 
     <!-- fresh listings -->
-    <section class="py-10 bg-slate-900 border-t border-slate-800">
+    <section class="py-10 bg-slate-900 border-t border-slate-800 relative z-10">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-end mb-4">
                 <h2 id="fresh-listings-title" class="text-2xl font-bold text-white">Fresh Listings</h2>

@@ -173,6 +173,63 @@ const initialProducts = [        { "id": 1, "title": "1TB NVMe M.2 SSD", "price"
             renderRecentListings();
         });
 
+        // custom animated location dropdown
+        const $customLocBtn = $('#custom-location-btn');
+        const $customLocMenu = $('#custom-location-menu');
+        const $customLocArrow = $('#custom-location-arrow');
+        const $customLocLabel = $('#custom-location-selected-text');
+        const $nativeLocSelect = $('#home-location-select');
+
+        function openLocationDropdown() {
+            $customLocMenu.removeClass('opacity-0 invisible -translate-y-2 pointer-events-none')
+                          .addClass('opacity-100 visible translate-y-0 pointer-events-auto');
+            $customLocArrow.addClass('rotate-180 text-brand').removeClass('text-slate-400');
+        }
+
+        function closeLocationDropdown() {
+            $customLocMenu.addClass('opacity-0 invisible -translate-y-2 pointer-events-none')
+                          .removeClass('opacity-100 visible translate-y-0 pointer-events-auto');
+            $customLocArrow.removeClass('rotate-180 text-brand').addClass('text-slate-400');
+        }
+
+        $customLocBtn.on('click', function(e) {
+            e.stopPropagation();
+            if ($customLocMenu.hasClass('opacity-100')) {
+                closeLocationDropdown();
+            } else {
+                openLocationDropdown();
+            }
+        });
+
+        $('.custom-location-option').on('click', function(e) {
+            e.stopPropagation();
+            const val = $(this).attr('data-value') || '';
+            const text = $(this).attr('data-text') || $(this).find('span').text();
+
+            $customLocLabel.text(text);
+            $nativeLocSelect.val(val).trigger('change');
+
+            $('.custom-location-option').removeClass('bg-slate-700/50 text-white font-medium').addClass('text-slate-300');
+            $('.custom-location-option .check-icon').addClass('hidden');
+
+            $(this).addClass('bg-slate-700/50 text-white font-medium').removeClass('text-slate-300');
+            $(this).find('.check-icon').removeClass('hidden');
+
+            closeLocationDropdown();
+        });
+
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#custom-location-wrapper').length) {
+                closeLocationDropdown();
+            }
+        });
+
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLocationDropdown();
+            }
+        });
+
         $('#search-form').submit(function(e) {
             e.preventDefault();
             searchQuery = ($('#home-search-input').val() || '').trim().toLowerCase();
