@@ -33,6 +33,28 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #D2232A;
         }
+
+        /* Hide horizontal scrollbar for category tabs */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Smooth fading slide-up entrance animation for listings */
+        @keyframes listingFadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .listing-card-animate {
+            animation: listingFadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+            will-change: transform, opacity;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans">
@@ -185,9 +207,6 @@
             <!-- category filters -->
             <div class="flex gap-3 overflow-x-auto pb-4 mb-4 hide-scrollbar whitespace-nowrap" style="scrollbar-width: none; -ms-overflow-style: none;">
                 <button data-category="All" class="home-category-btn active-category inline-block px-5 py-2 border border-brand text-brand rounded-full transition focus:outline-none">All</button>
-                <style>
-                    .hide-scrollbar::-webkit-scrollbar { display: none; }
-                </style>
                 <button data-category="Processors" class="home-category-btn inline-block px-5 py-2 border border-slate-600 rounded-full text-slate-300 hover:border-brand hover:text-brand transition focus:outline-none">Processors</button>
                 <button data-category="Graphics Cards (GPU)" class="home-category-btn inline-block px-5 py-2 border border-slate-600 rounded-full text-slate-300 hover:border-brand hover:text-brand transition focus:outline-none">GPUs</button>
                 <button data-category="Laptops" class="home-category-btn inline-block px-5 py-2 border border-slate-600 rounded-full text-slate-300 hover:border-brand hover:text-brand transition focus:outline-none">Laptops</button>

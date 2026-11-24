@@ -1,24 +1,24 @@
-$(document).ready(async function() {
+$(document).ready(async function () {
     const urlParamsGlobal = new URLSearchParams(window.location.search);
     if (urlParamsGlobal.get('login') === 'success') {
         $('body').prepend('<div id="login-notification" class="bg-green-500 text-white text-center py-2 font-bold shadow-md relative z-[60]">Successfully signed in! <button onclick="$(\'#login-notification\').slideUp()" class="absolute right-4 top-2 text-white hover:text-gray-200"><i class="fas fa-times"></i></button></div>');
         setTimeout(() => $('#login-notification').slideUp(), 3000);
     }
-    
-    // mobile menu & auth tabs
-    $('#mobile-menu-btn').click(function() { $('#mobile-menu').slideToggle('fast'); });
-    $('#filter-toggle-btn').click(function() { $('#sidebar-filters').slideToggle('fast'); });
 
-    $('#tab-register').click(function() {
+    // mobile menu & auth tabs
+    $('#mobile-menu-btn').click(function () { $('#mobile-menu').slideToggle('fast'); });
+    $('#filter-toggle-btn').click(function () { $('#sidebar-filters').slideToggle('fast'); });
+
+    $('#tab-register').click(function () {
         $('#login-form').hide(); $('#register-form').fadeIn();
         $(this).addClass('text-brand border-b-2 border-brand bg-slate-800').removeClass('text-slate-400 hover:text-brand');
         $('#tab-login').removeClass('text-brand border-b-2 border-brand bg-slate-800').addClass('text-slate-400 hover:text-brand');
     });
 
-    $('#tab-login').click(function() {
+    $('#tab-login').click(function () {
         $('#register-form').hide(); $('#login-form').fadeIn();
         $(this).addClass('text-brand border-b-2 border-brand bg-slate-800').removeClass('text-slate-400 hover:text-brand');
-        $('#tab-register').removeClass('text-brand border-b-2 border-brand bg-slate-800').addClass('text-slate-400 hover:text-brand'); 
+        $('#tab-register').removeClass('text-brand border-b-2 border-brand bg-slate-800').addClass('text-slate-400 hover:text-brand');
     });
 
     // state
@@ -71,7 +71,7 @@ $(document).ready(async function() {
         $('#mobile-menu a[href="login.php"]').replaceWith(`<a href="listing.php" class="block py-1 text-blue-400 font-semibold mb-2"><i class="fas fa-plus-circle mr-1"></i> Make a Listing</a><button id="mobile-logout-btn" class="block py-1 text-red-600 w-full text-left font-semibold"><i class="fas fa-sign-out-alt mr-1"></i> Logout</button>`);
     }
 
-    $(document).on('click', '#logout-btn, #mobile-logout-btn', function() {
+    $(document).on('click', '#logout-btn, #mobile-logout-btn', function () {
         localStorage.removeItem('currentUser');
         const form = $('<form method="post" action="process.php" style="display:none"><input type="hidden" name="action" value="logout"></form>');
         $('body').append(form);
@@ -81,7 +81,7 @@ $(document).ready(async function() {
 
 
     // listing card template
-    function generateProductCard(product) {
+    function generateProductCard(product, index = 0) {
         let condBadgeClass = "bg-slate-700 text-slate-300";
         if (product.condition === "Brand New") condBadgeClass = "bg-green-100 text-green-700 border-green-200 border";
         if (product.condition === "Like New") condBadgeClass = "bg-blue-100 text-blue-700 border-blue-200 border";
@@ -95,8 +95,11 @@ $(document).ready(async function() {
             statusBadge = `<div class="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded shadow font-bold z-10 uppercase tracking-wide">Pending</div>`;
         }
 
+        const safeIndex = (typeof index === 'number' && !isNaN(index)) ? index : 0;
+        const delayStyle = `style="animation-delay: ${(safeIndex % 12) * 35}ms;"`;
+
         return `
-            <a href="details.php?id=${product.id}" class="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden hover:shadow-xl hover:border-brand hover:-translate-y-1 transition-all duration-200 flex flex-col relative group cursor-pointer block">
+            <a href="details.php?id=${product.id}" ${delayStyle} class="listing-card-animate bg-slate-800 border border-slate-700 rounded-lg overflow-hidden hover:shadow-xl hover:border-brand hover:-translate-y-1 transition-all duration-200 flex flex-col relative group cursor-pointer block">
                 ${statusBadge}
                 <div class="relative overflow-hidden">
                     <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
@@ -120,7 +123,7 @@ $(document).ready(async function() {
         let searchQuery = '';
         let searchLocation = '';
 
-        let renderRecentListings = function() {
+        let renderRecentListings = function () {
             let filtered = products;
 
             if (currentCategory !== 'All') {
@@ -150,18 +153,47 @@ $(document).ready(async function() {
             if (recent.length > 0) {
                 $('#recent-listings-grid').html(recent.map(generateProductCard).join(''));
             } else {
-                $('#recent-listings-grid').html('<div class="text-slate-400 col-span-full text-center py-12"><i class="fas fa-search text-4xl mb-3 block text-slate-500"></i><p class="text-lg font-semibold">No listings found</p><p class="text-sm text-slate-500">Try searching with different keywords or location.</p></div>');
+                $('#recent-listings-grid').html('<div class="listing-card-animate text-slate-400 col-span-full text-center py-12"><i class="fas fa-search text-4xl mb-3 block text-slate-500"></i><p class="text-lg font-semibold">No listings found</p><p class="text-sm text-slate-500">Try searching with different keywords or location.</p></div>');
             }
         };
 
         renderRecentListings();
 
-        $('.home-category-btn').click(function() {
+        let categoryTransitionTimeout = null;
+
+        $('.home-category-btn').click(function () {
+            const selectedCategory = $(this).attr('data-category');
+            if (selectedCategory === currentCategory) return;
+
             $('.home-category-btn').removeClass('active-category border-brand text-brand').addClass('border-slate-600 text-slate-300');
             $(this).addClass('active-category border-brand text-brand').removeClass('border-slate-600 text-slate-300');
-            
-            currentCategory = $(this).attr('data-category');
-            renderRecentListings();
+
+            currentCategory = selectedCategory;
+
+            const $grid = $('#recent-listings-grid');
+
+            if (categoryTransitionTimeout) {
+                clearTimeout(categoryTransitionTimeout);
+            }
+
+            // Step 1: Smooth fade out and slight slide down of previous items
+            $grid.css({
+                'transition': 'opacity 0.16s ease-out, transform 0.16s ease-out',
+                'opacity': '0',
+                'transform': 'translateY(10px)'
+            });
+
+            // Step 2: Render new listings and trigger staggered fade & slide-in
+            categoryTransitionTimeout = setTimeout(() => {
+                renderRecentListings();
+
+                // Reset grid container styling so child cards smoothly animate in
+                $grid.css({
+                    'transition': 'none',
+                    'opacity': '1',
+                    'transform': 'translateY(0)'
+                });
+            }, 160);
         });
 
         // custom animated location dropdown
@@ -173,17 +205,17 @@ $(document).ready(async function() {
 
         function openLocationDropdown() {
             $customLocMenu.removeClass('opacity-0 invisible -translate-y-2 pointer-events-none')
-                          .addClass('opacity-100 visible translate-y-0 pointer-events-auto');
+                .addClass('opacity-100 visible translate-y-0 pointer-events-auto');
             $customLocArrow.addClass('rotate-180 text-brand').removeClass('text-slate-400');
         }
 
         function closeLocationDropdown() {
             $customLocMenu.addClass('opacity-0 invisible -translate-y-2 pointer-events-none')
-                          .removeClass('opacity-100 visible translate-y-0 pointer-events-auto');
+                .removeClass('opacity-100 visible translate-y-0 pointer-events-auto');
             $customLocArrow.removeClass('rotate-180 text-brand').addClass('text-slate-400');
         }
 
-        $customLocBtn.on('click', function(e) {
+        $customLocBtn.on('click', function (e) {
             e.stopPropagation();
             if ($customLocMenu.hasClass('opacity-100')) {
                 closeLocationDropdown();
@@ -192,7 +224,7 @@ $(document).ready(async function() {
             }
         });
 
-        $('.custom-location-option').on('click', function(e) {
+        $('.custom-location-option').on('click', function (e) {
             e.stopPropagation();
             const val = $(this).attr('data-value') || '';
             const text = $(this).attr('data-text') || $(this).find('span').text();
@@ -209,19 +241,19 @@ $(document).ready(async function() {
             closeLocationDropdown();
         });
 
-        $(document).on('click', function(e) {
+        $(document).on('click', function (e) {
             if (!$(e.target).closest('#custom-location-wrapper').length) {
                 closeLocationDropdown();
             }
         });
 
-        $(document).on('keydown', function(e) {
+        $(document).on('keydown', function (e) {
             if (e.key === 'Escape') {
                 closeLocationDropdown();
             }
         });
 
-        $('#search-form').submit(function(e) {
+        $('#search-form').submit(function (e) {
             e.preventDefault();
             searchQuery = ($('#home-search-input').val() || '').trim().toLowerCase();
             searchLocation = ($('#home-location-select').val() || '').trim().toLowerCase();
@@ -241,7 +273,21 @@ $(document).ready(async function() {
                 $('#fresh-listings-title').text('Fresh Listings');
             }
 
-            renderRecentListings();
+            const $grid = $('#recent-listings-grid');
+            $grid.css({
+                'transition': 'opacity 0.16s ease-out, transform 0.16s ease-out',
+                'opacity': '0',
+                'transform': 'translateY(10px)'
+            });
+
+            setTimeout(() => {
+                renderRecentListings();
+                $grid.css({
+                    'transition': 'none',
+                    'opacity': '1',
+                    'transform': 'translateY(0)'
+                });
+            }, 160);
 
             // scroll to results
             $('html, body').animate({ scrollTop: $('#recent-listings-grid').offset().top - 120 }, 250);
@@ -261,9 +307,9 @@ $(document).ready(async function() {
         }
 
         function renderFilteredProducts() {
-            let selectedCategories = $('.filter-category:checked').map(function(){ return $(this).val(); }).get();
-            let selectedConditions = $('.filter-condition:checked').map(function(){ return $(this).val(); }).get();
-            let selectedBrands = $('.filter-brand:checked').map(function(){ return $(this).val(); }).get();
+            let selectedCategories = $('.filter-category:checked').map(function () { return $(this).val(); }).get();
+            let selectedConditions = $('.filter-condition:checked').map(function () { return $(this).val(); }).get();
+            let selectedBrands = $('.filter-brand:checked').map(function () { return $(this).val(); }).get();
             let minPrice = parseInt($('#min-price').val()) || 0;
             let maxPrice = parseInt($('#max-price').val()) || 9999999;
 
@@ -334,7 +380,7 @@ $(document).ready(async function() {
 
         function renderPaginationControls(totalPages) {
             let paginationHtml = '';
-            
+
             if (currentPage > 1) {
                 paginationHtml += `<button class="pagination-btn px-4 py-2 border rounded text-slate-300 bg-slate-800 hover:bg-slate-700" data-page="${currentPage - 1}">&laquo; Prev</button>`;
             } else {
@@ -358,19 +404,19 @@ $(document).ready(async function() {
             $('#pagination-controls').html(paginationHtml);
         }
 
-        $(document).on('click', '.pagination-btn', function() {
+        $(document).on('click', '.pagination-btn', function () {
             currentPage = parseInt($(this).attr('data-page'));
             renderFilteredProducts();
             $('html, body').animate({ scrollTop: $("#products-grid").offset().top - 100 }, 200);
         });
 
         renderFilteredProducts();
-        $('.filter-category, .filter-condition, .filter-brand, #min-price, #max-price, #sort-select, #market-search-input, #market-location-select').on('change input', function() {
+        $('.filter-category, .filter-condition, .filter-brand, #min-price, #max-price, #sort-select, #market-search-input, #market-location-select').on('change input', function () {
             currentPage = 1;
             renderFilteredProducts();
         });
 
-        $('#market-search-form').submit(function(e) {
+        $('#market-search-form').submit(function (e) {
             e.preventDefault();
             currentPage = 1;
             renderFilteredProducts();
@@ -418,7 +464,7 @@ $(document).ready(async function() {
                 if ($('#detail-gallery-strip').length === 0) {
                     $('#detail-image').after(`<div id="detail-gallery-strip" class="flex flex-wrap gap-2 p-3 w-full bg-slate-950/70 justify-center border-t border-slate-700">${thumbsHtml}</div>`);
                 }
-                $(document).on('click', '.gallery-thumb', function() {
+                $(document).on('click', '.gallery-thumb', function () {
                     $('.gallery-thumb').removeClass('border-brand').addClass('border-slate-700');
                     $(this).removeClass('border-slate-700').addClass('border-brand');
                     $('#detail-image').attr('src', $(this).attr('src'));
@@ -431,7 +477,7 @@ $(document).ready(async function() {
             else if (product.status === "Pending") statusEl.addClass("bg-yellow-500");
             else if (product.status === "Sold") statusEl.addClass("bg-red-600");
             else statusEl.addClass("bg-slate-800 text-white");
-            
+
             if ($('#similar-listings-section').length) {
                 let similar = products.filter(p => p.category === product.category && p.id !== product.id);
                 let other = products.filter(p => p.category !== product.category && p.id !== product.id);
@@ -457,7 +503,7 @@ $(document).ready(async function() {
                 }
             }
 
-            $(document).on('click', '#chat-seller-btn', function() {
+            $(document).on('click', '#chat-seller-btn', function () {
                 if (!currentUser) {
                     alert("You must be logged in to chat with a seller!");
                     window.location.href = "login.php";
@@ -503,7 +549,7 @@ $(document).ready(async function() {
     //     window.location.href = "index.php?login=success";
     // });
 
-    $('#listing-form').submit(async function(e) {
+    $('#listing-form').submit(async function (e) {
         e.preventDefault();
         if (!currentUser) {
             alert("You must be logged in to post a listing!");
