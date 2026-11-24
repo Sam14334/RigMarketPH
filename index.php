@@ -20,10 +20,10 @@
     <style>
         /* Custom scrollbar for dropdown menu */
         .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+            width: 7px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1e293b;
+            background: #0f172a;
             border-radius: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -69,8 +69,8 @@
     </nav>
 
     <!-- hero section -->
-    <header class="relative bg-slate-900 text-white py-24 px-4 overflow-hidden">
-        <div class="absolute inset-0 z-0">
+    <header class="relative bg-slate-900 text-white py-24 px-4 z-30">
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <img src="https://bwtggiazgqmcwxxrzswl.supabase.co/storage/v1/object/public/website-images/GIGABYTE%20GAMING%20A16.jpg" alt="PC Gaming Setup" class="w-full h-full object-cover opacity-30">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
         </div>
