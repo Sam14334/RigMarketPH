@@ -292,6 +292,34 @@ $(document).ready(async function () {
             // scroll to results
             $('html, body').animate({ scrollTop: $('#recent-listings-grid').offset().top - 120 }, 250);
         });
+
+        // Go to Top button visibility & smooth scroll
+        const $backToTopBtn = $('#back-to-top');
+        const $searchForm = $('#search-form');
+
+        if ($backToTopBtn.length && $searchForm.length) {
+            const checkSearchVisibility = function() {
+                const searchRect = $searchForm[0].getBoundingClientRect();
+                // Visible when search bar bottom has scrolled out of view past the navbar
+                const isSearchHidden = searchRect.bottom < 60;
+
+                if (isSearchHidden) {
+                    $backToTopBtn.removeClass('opacity-0 translate-y-6 pointer-events-none')
+                                 .addClass('opacity-100 translate-y-0 pointer-events-auto');
+                } else {
+                    $backToTopBtn.addClass('opacity-0 translate-y-6 pointer-events-none')
+                                 .removeClass('opacity-100 translate-y-0 pointer-events-auto');
+                }
+            };
+
+            $(window).on('scroll resize', checkSearchVisibility);
+            checkSearchVisibility();
+
+            $backToTopBtn.on('click', function(e) {
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 400);
+            });
+        }
     }
 
     // browse market filters and pagination

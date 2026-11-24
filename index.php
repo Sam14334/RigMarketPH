@@ -219,6 +219,11 @@
         </div>
     </section>
 
+    <!-- Back to top button -->
+    <button id="back-to-top" aria-label="Go to top" class="fixed bottom-6 right-6 z-40 bg-brand hover:bg-brandDark text-white w-12 h-12 rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300 ease-out opacity-0 translate-y-6 pointer-events-none hover:scale-110 active:scale-95 focus:outline-none">
+        <i class="fas fa-arrow-up text-lg"></i>
+    </button>
+
     <!-- footer -->
     <footer class="bg-slate-800 text-slate-400 py-8 border-t border-slate-700">
         <div class="container mx-auto px-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center">
