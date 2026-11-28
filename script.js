@@ -83,8 +83,8 @@ $(document).ready(async function () {
     // listing card template
     function generateProductCard(product, index = 0) {
         let condBadgeClass = "bg-slate-700 text-slate-300";
-        if (product.condition === "Brand New") condBadgeClass = "bg-green-100 text-green-700 border-green-200 border";
-        if (product.condition === "Like New") condBadgeClass = "bg-blue-100 text-blue-700 border-blue-200 border";
+        if (product.condition === "Brand New") condBadgeClass = "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30";
+        if (product.condition === "Like New") condBadgeClass = "bg-sky-500/15 text-sky-300 border border-sky-500/30";
 
         let statusBadge = "";
         if (product.status === "Sold") {
@@ -92,7 +92,7 @@ $(document).ready(async function () {
                               <span class="bg-red-600 text-white font-black uppercase text-xl px-4 py-2 rounded-lg transform -rotate-12 shadow-lg tracking-widest border-2 border-red-700">SOLD</span>
                            </div>`;
         } else if (product.status === "Pending") {
-            statusBadge = `<div class="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded shadow font-bold z-10 uppercase tracking-wide">Pending</div>`;
+            statusBadge = `<div class="absolute top-2 left-2 bg-yellow-500 text-slate-900 text-xs px-2 py-1 rounded shadow font-bold z-10 uppercase tracking-wide">Pending</div>`;
         }
 
         const safeIndex = (typeof index === 'number' && !isNaN(index)) ? index : 0;
@@ -102,8 +102,8 @@ $(document).ready(async function () {
             <a href="details.php?id=${product.id}" ${delayStyle} class="listing-card-animate bg-slate-800 border border-slate-700 rounded-lg overflow-hidden hover:shadow-xl hover:border-brand hover:-translate-y-1 transition-all duration-200 flex flex-col relative group cursor-pointer block">
                 ${statusBadge}
                 <div class="relative overflow-hidden">
-                    <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                    <span class="absolute top-2 right-2 bg-slate-900 text-white text-xs px-2 py-1 rounded shadow">${product.category}</span>
+                    <img src="${product.image}" alt="${product.title}" loading="lazy" width="400" height="192" onerror="this.onerror=null;this.removeAttribute('src');this.classList.add('bg-slate-700');" class="w-full h-48 object-cover bg-slate-700 group-hover:scale-105 transition-transform duration-300">
+                    <span class="absolute top-2 right-2 bg-slate-900/90 text-white text-xs px-2 py-1 rounded shadow">${product.category}</span>
                 </div>
                 <div class="p-4 flex-grow flex flex-col">
                     <h3 class="font-bold text-white mb-1 truncate text-lg group-hover:text-brand transition-colors" title="${product.title}">${product.title}</h3>

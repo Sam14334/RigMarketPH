@@ -51,6 +51,40 @@
             }
         }
 
+        /* Browser surfaces themed to the palette */
+        ::selection { background: #D2232A; color: #fff; }
+        html { scroll-behavior: smooth; }
+        a:focus-visible, button:focus-visible, input:focus-visible {
+            outline: 2px solid #D2232A;
+            outline-offset: 3px;
+            border-radius: 6px;
+        }
+
+        /* Active category pill: solid fill so the current filter reads at a glance */
+        .home-category-btn { min-height: 40px; }
+        .home-category-btn.active-category,
+        .home-category-btn.active-category:hover,
+        .home-category-btn.active-category:focus-visible {
+            background-color: #D2232A;
+            border-color: #D2232A;
+            color: #fff;
+        }
+
+        /* Hero headline: solid, balanced wrapping */
+        .hero-title { text-wrap: balance; letter-spacing: -0.02em; }
+        .hero-sub { text-wrap: pretty; }
+
+        /* Loading skeleton */
+        .skeleton-card { background: #1e293b; border: 1px solid #334155; border-radius: 0.5rem; overflow: hidden; }
+        .skeleton-block { background: linear-gradient(90deg, #273449 0%, #334155 50%, #273449 100%); background-size: 200% 100%; animation: skeletonShimmer 1.4s linear infinite; }
+        @keyframes skeletonShimmer { to { background-position: -200% 0; } }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .listing-card-animate, .skeleton-block { animation: none !important; }
+            * { transition-duration: 0.01ms !important; }
+        }
+
         .listing-card-animate {
             animation: listingFadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
             will-change: transform, opacity;
@@ -98,8 +132,8 @@
         </div>
 
         <div class="container mx-auto max-w-4xl text-center relative z-10">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 drop-shadow-md">Find & Sell PC Parts Locally</h1>
-            <p class="text-lg md:text-xl text-gray-300 mb-10 drop-shadow">The trusted P2P classifieds for the Philippine PC building and gaming community.</p>
+            <h1 class="hero-title text-4xl md:text-6xl font-extrabold mb-4 text-white drop-shadow-md">Find & Sell PC Parts Locally</h1>
+            <p class="hero-sub text-lg md:text-xl text-slate-200 mb-10 drop-shadow max-w-2xl mx-auto">The trusted P2P classifieds for the Philippine PC building and gaming community.</p>
             
             <form id="search-form" class="flex flex-col md:flex-row bg-slate-800/90 backdrop-blur-md rounded-lg shadow-2xl p-1 border border-slate-700 relative z-30">
                 <div class="flex-grow flex items-center px-4 py-3 md:border-r border-slate-700">
@@ -215,7 +249,19 @@
                 <button data-category="Full Rigs" class="home-category-btn inline-block px-5 py-2 border border-slate-600 rounded-full text-slate-300 hover:border-brand hover:text-brand transition focus:outline-none">Full Rigs</button>
             </div>
             
-            <div id="recent-listings-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            <div id="recent-listings-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" aria-live="polite" aria-busy="true">
+                <?php for ($i = 0; $i < 4; $i++): ?>
+                <div class="skeleton-card" aria-hidden="true">
+                    <div class="skeleton-block h-48"></div>
+                    <div class="p-4 space-y-3">
+                        <div class="skeleton-block h-5 rounded w-3/4"></div>
+                        <div class="skeleton-block h-3 rounded w-full"></div>
+                        <div class="skeleton-block h-6 rounded w-1/3"></div>
+                        <div class="skeleton-block h-4 rounded w-full mt-4"></div>
+                    </div>
+                </div>
+                <?php endfor; ?>
+            </div>
         </div>
     </section>
 
